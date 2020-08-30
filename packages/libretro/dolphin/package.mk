@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="dolphin"
-PKG_VERSION="2dd20d2"
+PKG_VERSION="b5ff411"
 PKG_REV="1"
 PKG_ARCH="x86_64 aarch64"
 PKG_LICENSE="GPLv2"
@@ -48,10 +48,6 @@ if [ "$OPENGLES_SUPPORT" = yes ]; then
 fi
 
 PKG_CMAKE_OPTS_TARGET="-DCLANG=ON -DLIBRETRO=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC} -DENABLE_X11=OFF"
-
-if [ "$PROJECT" == "Generic_VK_nvidia" ]; then
-  PKG_VERSION="a5bce7d"
-fi
 
 pre_make_target() {
   # build fix for cross-compiling Dolphin, from Dolphin forums

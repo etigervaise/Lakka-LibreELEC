@@ -26,7 +26,7 @@ get_graphicdrivers() {
   GALLIUM_DRIVERS=""
   DRI_DRIVERS=""
   XORG_DRIVERS=""
-  LLVM_SUPPORT="no"
+  LLVM_SUPPORT="yes"
   COMPOSITE_SUPPORT="no"
   VDPAU_SUPPORT="no"
   VAAPI_SUPPORT="no"

@@ -18,11 +18,11 @@
 ################################################################################
 
 PKG_NAME="vulkan-loader"
-PKG_VERSION="1.2.151"
+PKG_VERSION="1.2.148"
 PKG_ARCH="any"
 PKG_LICENSE="Apache 2.0"
 PKG_SITE="https://www.khronos.org"
-PKG_URL="https://github.com/KhronosGroup/Vulkan-Loader/archive/v1.2.151.zip"
+PKG_URL="https://github.com/KhronosGroup/Vulkan-Loader/archive/v1.2.148.zip"
 PKG_SOURCE_DIR="Vulkan-*$PKG_VERSION*"
 PKG_DEPENDS_TARGET="toolchain cmake:host Python3"
 PKG_SECTION="graphics"

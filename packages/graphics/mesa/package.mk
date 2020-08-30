@@ -3,21 +3,14 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="mesa"
-PKG_VERSION="19.1.7"
-PKG_SHA256="97c9f6a6127bee5ab21c3fe63ff3e0bd73a7966415f92f66500b0b276b7150da"
+PKG_VERSION="19.3.5"
+PKG_SHA256="d115c046a0e5bd316b107d47245471dc826491709f37b524c133d09ae5c9ffbb"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.mesa3d.org/"
 PKG_URL="https://github.com/mesa3d/mesa/archive/mesa-$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain Mako:host expat libdrm"
 PKG_LONGDESC="Mesa is a 3-D graphics library with an API."
 PKG_TOOLCHAIN="meson"
-PKG_BUILD_FLAGS="+lto"
-
-if listcontains "${GRAPHIC_DRIVERS}" "(lima|panfrost)"; then
-  PKG_VERSION="659aa3dd6519f64379e91ca97fe184434fd7fdee" # master-19.2
-  PKG_SHA256="7152dd8c780e47c4e5e18ebaa47fd4f8fe116b43012affda2f964ae23b324d34"
-  PKG_URL="https://gitlab.freedesktop.org/mesa/mesa/-/archive/$PKG_VERSION/mesa-$PKG_VERSION.tar.gz"
-fi
 
 get_graphicdrivers
 
@@ -52,7 +45,7 @@ if [ "$TARGET_ARCH" = "i386" ]; then
 fi
 
 if [ "$DISPLAYSERVER" = "x11" ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET xorgproto libXext libXdamage libXfixes libXxf86vm libxcb libX11 libxshmfence libXrandr"
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET xorgproto libXext libXdamage libXfixes libXxf86vm libxcb libX11 libxshmfence libXrandr libglvnd"
   export X11_INCLUDES=
   PKG_MESON_OPTS_TARGET+=" -Dplatforms=x11,drm -Ddri3=true -Dglx=dri"
 elif [ "$DISPLAYSERVER" = "weston" ]; then
@@ -99,40 +92,3 @@ if [ "$OPENGLES_SUPPORT" = "yes" ]; then
 else
   PKG_MESON_OPTS_TARGET+=" -Dgles1=false -Dgles2=false"
 fi
-
-# Temporary workaround:
-# Listed libraries are static, while mesa expects shared ones. This breaks the
-# dependency tracking. The following has some ideas on how to address that.
-# https://github.com/LibreELEC/LibreELEC.tv/pull/2163
-pre_configure_target() {
-  if [ "$DISPLAYSERVER" = "x11" ]; then
-    export LIBS="-lxcb-dri3 -lxcb-dri2 -lxcb-xfixes -lxcb-present -lxcb-sync -lxshmfence -lz"
-  fi
-
-  # Temporary hack (until panfrost evolves) to use 64-bit pointers in structs passed to GPU
-  # even if userspace is 32-bit. This is required for Mali-T8xx to work with mesa built for
-  # arm userspace. The hack does not affect building for aarch64.
-  if [[ "${MALI_FAMILY}" = *t8* ]]; then
-    (
-      cd "$PKG_BUILD/src/gallium/drivers/panfrost"
-      sed -i 's/uintptr_t/uint64_t/g' include/panfrost-job.h \
-                                      include/panfrost-misc.h \
-                                      pan_context.c \
-                                      pandecode/decode.c
-
-      find -type f -exec sed -i 's/ndef __LP64__/ 0/g; s/def __LP64__/ 1/g' {} +;
-    )
-  fi
-}
-
-post_makeinstall_target() {
-  # Similar hack is needed on EGL, GLES* front. Might as well drop it and test the GLVND?
-  if [ "$DISPLAYSERVER" = "x11" ]; then
-    # rename and relink for cooperate with nvidia drivers
-    rm -rf $INSTALL/usr/lib/libGL.so
-    rm -rf $INSTALL/usr/lib/libGL.so.1
-    ln -sf libGL.so.1 $INSTALL/usr/lib/libGL.so
-    ln -sf /var/lib/libGL.so $INSTALL/usr/lib/libGL.so.1
-    mv $INSTALL/usr/lib/libGL.so.1.2.0 $INSTALL/usr/lib/libGL_mesa.so.1
-  fi
-}

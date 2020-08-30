@@ -19,10 +19,10 @@
 ################################################################################
 
 PKG_NAME="yabasanshiro"
-PKG_VERSION="7ae0de7"
+PKG_VERSION="73c6766"
 PKG_GIT_CLONE_BRANCH="yabasanshiro"
 PKG_REV="1"
-PKG_ARCH="any"
+PKG_ARCH="arm"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/yabause"
 PKG_URL="$PKG_SITE.git"

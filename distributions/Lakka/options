@@ -33,7 +33,7 @@
 # for a list of additional drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU"
+  ADDITIONAL_DRIVERS="RTL8192EU RTL8812AU"
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -85,7 +85,7 @@
   JOYSTICK_SUPPORT="yes"
 
 # build and install CEC adapter support (yes / no)
-# CEC_SUPPORT="yes"
+# CEC_SUPPORT="no"
 
 # build and install CEC framework support (yes / no)
   CEC_FRAMEWORK_SUPPORT="no"
@@ -158,10 +158,10 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 # DISTRO_PKG_SETTINGS="LibreELEC-settings"
 
 # IR remote protocols supported in default config
-# IR_REMOTE_PROTOCOLS="RC6 NEC"
+# IR_REMOTE_PROTOCOLS=""
 
 # IR remote keymaps supported in default config
-# IR_REMOTE_KEYMAPS="rc6_mce xbox_360 xbox_one"
+# IR_REMOTE_KEYMAPS=""
 
   LAKKA_MIRROR="http://sources.lakka.tv"
 
@@ -201,6 +201,7 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 " dosbox "\
 " dosbox-svn "\
 " duckstation "\
+" emux-sms"\
 " easyrpg "\
 " fbneo "\
 " fceumm "\
@@ -221,6 +222,8 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 " kronos "\
 " lutro "\
 " mame2003-plus "\
+" mame2010 "\
+" mame2015 "\
 " melonds "\
 " meowpc98 "\
 " mesen "\
@@ -240,6 +243,7 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 " picodrive "\
 " play "\
 " pocketcdg "\
+" pokemini "\
 " ppsspp "\
 " prboom "\
 " prosystem "\
@@ -297,6 +301,9 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 "Magnavox - Odyssey2.lpl;"\
 "MAME.lpl;"\
 "MAME 2003-Plus.lpl;"\
+"MAME 2010.lpl;"\
+"MAME 2015.lpl;"\
+"MAME 2016.lpl;"\
 "Mattel - Intellivision.lpl;"\
 "Microsoft - MSX2.lpl;"\
 "Microsoft - MSX.lpl;"\
@@ -316,6 +323,7 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 "Nintendo - Nintendo DSi Decrypted.lpl;"\
 "Nintendo - Nintendo DSi (DLC).lpl;"\
 "Nintendo - Nintendo Entertainment System.lpl;"\
+"Nintendo - Pokemon Mini.lpl;"\
 "Nintendo - Satellaview.lpl;"\
 "Nintendo - Super Nintendo Entertainment System.lpl;"\
 "Nintendo - Virtual Boy.lpl;"\
@@ -369,6 +377,9 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 "/tmp/cores/o2em_libretro.so;"\
 "/tmp/cores/mame_libretro.so;"\
 "/tmp/cores/mame2003_plus_libretro.so;"\
+"/tmp/cores/mame2010_libretro.so;"\
+"/tmp/cores/mame2015_libretro.so;"\
+"/tmp/cores/mame_libretro.so;"\
 "/tmp/cores/freeintv_libretro.so;"\
 "/tmp/cores/bluemsx_libretro.so;"\
 "/tmp/cores/bluemsx_libretro.so;"\
@@ -388,6 +399,7 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
 "/tmp/cores/desmume_libretro.so;"\
 "/tmp/cores/desmume_libretro.so;"\
 "/tmp/cores/nestopia_libretro.so;"\
+"/tmp/cores/pokemini_libretro.so;"\
 "/tmp/cores/snes9x2010_libretro.so;"\
 "/tmp/cores/snes9x2010_libretro.so;"\
 "/tmp/cores/mednafen_vb_libretro.so;"\
@@ -435,6 +447,10 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel_n64/mupen64plus_next}"
   fi
 
+  if [ "$PROJECT" != "Generic" -a "$DEVICE" != "RPi" ]; then
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//mame/mame2003-plus}"
+  fi
+
 # disable some cores
   if [ "$PROJECT" = "RPi" ]; then
     LIBRETRO_CORES="${LIBRETRO_CORES// yabasanshiro /}"
@@ -460,8 +476,8 @@ DISTRO_SRC="http://sources.libreelec.tv/$LIBREELEC_VERSION"
       LIBRETRO_CORES="${LIBRETRO_CORES// higan-sfc /}"
       LIBRETRO_CORES="${LIBRETRO_CORES// kronos /}"
       LIBRETRO_CORES="${LIBRETRO_CORES// mame2003-plus /}"
-      LIBRETRO_CORES="${LIBRETRO_CORES// mame2003 /}"
       LIBRETRO_CORES="${LIBRETRO_CORES// mame2010 /}"
+      LIBRETRO_CORES="${LIBRETRO_CORES// mame2015 /}"
       LIBRETRO_CORES="${LIBRETRO_CORES// melonds /}"
       LIBRETRO_CORES="${LIBRETRO_CORES// meowpc98 /}"
       LIBRETRO_CORES="${LIBRETRO_CORES// mesen-s /}"
